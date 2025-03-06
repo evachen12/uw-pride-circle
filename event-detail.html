@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Details - UW Pride Circle</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header and Navigation -->
+        <div class="header">
+            <div class="logo"><span class="uw-text">UW</span> <span class="pride-circle-text">Pride Circle</span></div>
+            <div class="navigation">
+                <button class="nav-button" onclick="location.href='index.html'">Home</button>
+                <button class="nav-button" onclick="location.href='about.html'">About</button>
+                <button class="nav-button active" onclick="location.href='events.html'">Events</button>
+                <button class="nav-button" onclick="location.href='resources.html'">Resources</button>
+                <div class="profile-dropdown">
+                    <button class="nav-button" onclick="location.href='profile.html'">Profile</button>
+                    <div class="dropdown-content">
+                        <a href="login.html" id="logoutButton">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- Event Detail Page Content -->
+            <div class="page active">
+                <div class="page-content">
+                    <a href="events.html" class="back-button">← Back to Events</a>
+                    <h3>Event Details</h3>
+                    <div class="event-detail">
+                        <h4 id="eventTitle">Bowling Night @ The HUB</h4>
+                        <div class="location">
+                            <label for="eventUsername">Username:</label>
+                            <input type="text" id="eventUsername" class="username-input" placeholder="Enter your username">
+                            
+                            <div class="look-conduct">
+                                <input type="checkbox" id="conductCheckbox" class="checkbox">
+                                <label for="conductCheckbox">I've reviewed the Code of Conduct</label>
+                            </div>
+                        </div>
+                        <button id="conductButton" onclick="location.href='code-of-conduct.html'" class="conduct-button">View Code of Conduct</button>
+                        <button id="eventSubmitButton" class="submit-button">Submit Registration</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="scripts.js"></script>
+    <script>
+        // Event-specific JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get event parameters from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const eventType = urlParams.get('event');
+            
+            // Set event title based on parameter
+            if (eventType === 'pride-kickoff') {
+                document.getElementById('eventTitle').textContent = 'Pride Week Kickoff';
+            } else if (eventType === 'bowling-night') {
+                document.getElementById('eventTitle').textContent = 'Bowling Night @ The HUB';
+            }
+            
+            // Handle form submission
+            document.getElementById('eventSubmitButton').addEventListener('click', function() {
+                const username = document.getElementById('eventUsername').value.trim();
+                const conductChecked = document.getElementById('conductCheckbox').checked;
+                
+                if (username === '') {
+                    alert('Please enter a username.');
+                    return;
+                }
+                
+                if (!conductChecked) {
+                    alert('Please review and agree to the Code of Conduct.');
+                    return;
+                }
+                
+                // Store registration info in localStorage
+                const eventName = document.getElementById('eventTitle').textContent;
+                const registeredEvents = JSON.parse(localStorage.getItem('registeredEvents') || '[]');
+                
+                registeredEvents.push({
+                    name: eventName,
+                    username: username
+                });
+                
+                localStorage.setItem('registeredEvents', JSON.stringify(registeredEvents));
+                
+                // Redirect to confirmation page
+                window.location.href = 'registration-confirmed.html?event=' + encodeURIComponent(eventName) + '&username=' + encodeURIComponent(username);
+            });
+        });
+    </script>
+</body>
+</html>

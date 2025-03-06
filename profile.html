@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - UW Pride Circle</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header and Navigation -->
+        <div class="header">
+            <div class="logo"><span class="uw-text">UW</span> <span class="pride-circle-text">Pride Circle</span></div>
+            <div class="navigation">
+                <button class="nav-button" onclick="location.href='index.html'">Home</button>
+                <button class="nav-button" onclick="location.href='about.html'">About</button>
+                <button class="nav-button" onclick="location.href='events.html'">Events</button>
+                <button class="nav-button" onclick="location.href='resources.html'">Resources</button>
+                <div class="profile-dropdown">
+                    <button class="nav-button active" onclick="location.href='profile.html'">Profile</button>
+                    <div class="dropdown-content">
+                        <a href="login.html" id="logoutButton">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- Anonymous Profile Mode -->
+            <div id="anonymous-profile" class="page">
+                <div class="page-content">
+                    <div class="profile-header">
+                        <h3>Your Profile:</h3>
+                    </div>
+                    
+                    <div class="profile-image-container">
+                        <div class="profile-details">
+                            <p>User: Anonymous Cat</p>
+                            <p>Pronouns: (not shared)</p>
+                        </div>
+                        <div class="profile-circle anonymous-circle">
+                            <svg viewBox="0 0 100 100" width="80" height="80">
+                                <circle cx="50" cy="50" r="45" fill="#f5f5f5" stroke="#333" stroke-width="2"/>
+                                <circle cx="50" cy="35" r="15" fill="#333"/>
+                                <path d="M25,70 C25,55 75,55 75,70 C75,85 25,85 25,70" fill="#333"/>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-section">
+                        <div class="event-title">My Events</div>
+                        <ul class="event-list" id="anonEventsList">
+                            <li><span class="event-item">1) <span class="event-wave">~~~~~</span></span></li>
+                            <li><span class="event-item">2) <span class="event-wave">~~~~~</span></span></li>
+                        </ul>
+                        
+                        <div class="ghost-toggle">
+                            <span class="ghost-label">Ghost Mode:</span> 
+                            <span class="toggle-box active" id="ghostOn">ON</span> 
+                            <span class="toggle-box" id="ghostOff">OFF</span>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-section">
+                        <div class="friendship-title">Your Friendship Bracelet</div>
+                        <div class="bracelet-container">
+                            <svg class="bracelet-svg" viewBox="0 0 300 40">
+                                <!-- Base bracelet curve -->
+                                <path d="M20,20 C80,5 220,5 280,20" fill="none" stroke="#f0f0f0" stroke-width="5"/>
+                                
+                                <!-- Clickable beads -->
+                                <circle class="bead" id="bead1" cx="40" cy="20" r="8" fill="#e63946" data-friend="Alex" data-date="Jan 15, 2025"/>
+                                <circle class="bead" id="bead2" cx="70" cy="16" r="8" fill="#ffb703" data-friend="Jamie" data-date="Feb 2, 2025"/>
+                                <circle class="bead" id="bead3" cx="100" cy="13" r="8" fill="#52b788" data-friend="Taylor" data-date="Feb 14, 2025"/>
+                                <circle class="bead" id="bead4" cx="130" cy="12" r="8" fill="#4361ee" data-friend="Morgan" data-date="Feb 28, 2025"/>
+                                <circle class="bead" id="bead5" cx="160" cy="12" r="8" fill="#7209b7" data-friend="Jordan" data-date="Mar 5, 2025"/>
+                                <circle class="bead" id="bead6" cx="190" cy="13" r="8" fill="#e63946" data-friend="Casey" data-date="Mar 10, 2025"/>
+                                <circle class="bead" id="bead7" cx="220" cy="15" r="8" fill="#ffb703" data-friend="Riley" data-date="Mar 15, 2025"/>
+                                <circle class="bead" id="bead8" cx="250" cy="17" r="8" fill="#52b788" data-friend="Sam" data-date="Mar 20, 2025"/>
+                            </svg>
+                            
+                            <div class="connection-popup" id="connectionPopup">
+                                <button class="close-btn">&times;</button>
+                                <div class="connection-info">
+                                    <svg width="30" height="30">
+                                        <circle cx="15" cy="15" r="14" fill="#f5f5f5" stroke="#333" stroke-width="1"/>
+                                        <circle cx="15" cy="10" r="5" fill="#333"/>
+                                        <path d="M5,20 C5,15 25,15 25,20 C25,25 5,25 5,20" fill="#333"/>
+                                    </svg>
+                                    <div>
+                                        <div class="connection-name" id="connectionName"></div>
+                                        <div class="connection-date" id="connectionDate"></div>
+                                    </div>
+                                </div>
+                                <p>Connected at the bowling night event</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-section">
+                        <div style="color: #7b2cbf; margin-bottom: 10px;">Newsletter</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="newsletter-y">
+                                <label for="newsletter-y">Y</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="newsletter-n" checked>
+                                <label for="newsletter-n">N</label>
+                            </div>
+                        </div>
+                        
+                        <div style="color: #7b2cbf; margin: 10px 0;">Can we contact you?</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="contact-y">
+                                <label for="contact-y">Y</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="contact-n" checked>
+                                <label for="contact-n">N</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Non-Ghost Profile Mode -->
+            <div id="non-ghost-profile" class="page">
+                <div class="page-content">
+                    <div class="profile-header">
+                        <h3>Your Profile:</h3>
+                    </div>
+                    
+                    <div class="profile-image-container">
+                        <div class="profile-details">
+                            <p>Name: Cindy</p>
+                            <p>Username: Anonymous Cat</p>
+                            <p>My Pronouns: She/Her</p>
+                        </div>
+                        <div class="profile-circle non-ghost-circle">
+                            <svg viewBox="0 0 100 100" width="80" height="80">
+                                <circle cx="50" cy="50" r="45" fill="#f5f5f5" stroke="#42b883" stroke-width="2"/>
+                                <circle cx="50" cy="35" r="15" fill="#333"/>
+                                <path d="M25,70 C25,55 75,55 75,70 C75,85 25,85 25,70" fill="#333"/>
+                            </svg>
+                            <div class="status-badge">NEW MEMBER</div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-section">
+                        <div class="event-title">My Events</div>
+                        <ul class="event-list" id="nonGhostEventsList">
+                            <li><span class="event-item">1) <span class="event-wave">~~~~~</span></span></li>
+                            <li><span class="event-item">2) <span class="event-wave">~~~~~</span></span></li>
+                        </ul>
+                        
+                        <div class="ghost-toggle">
+                            <span class="ghost-label">Ghost Mode:</span> 
+                            <span class="toggle-box" id="ghostOn2">ON</span> 
+                            <span class="toggle-box active" id="ghostOff2">OFF</span>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-section">
+                        <div class="friendship-title">Your Friendship Bracelet</div>
+                        <div class="bracelet-container">
+                            <svg class="bracelet-svg" viewBox="0 0 300 40">
+                                <!-- Base bracelet curve -->
+                                <path d="M20,20 C80,5 220,5 280,20" fill="none" stroke="#f0f0f0" stroke-width="5"/>
+                                
+                                <!-- Clickable beads -->
+                                <circle class="bead" id="bead9" cx="40" cy="20" r="8" fill="#e63946" data-friend="Alex" data-date="Jan 15, 2025"/>
+                                <circle class="bead" id="bead10" cx="70" cy="16" r="8" fill="#ffb703" data-friend="Jamie" data-date="Feb 2, 2025"/>
+                                <circle class="bead" id="bead11" cx="100" cy="13" r="8" fill="#52b788" data-friend="Taylor" data-date="Feb 14, 2025"/>
+                                <circle class="bead" id="bead12" cx="130" cy="12" r="8" fill="#4361ee" data-friend="Morgan" data-date="Feb 28, 2025"/>
+                                <circle class="bead" id="bead13" cx="160" cy="12" r="8" fill="#7209b7" data-friend="Jordan" data-date="Mar 5, 2025"/>
+                                <circle class="bead" id="bead14" cx="190" cy="13" r="8" fill="#e63946" data-friend="Casey" data-date="Mar 10, 2025"/>
+                                <circle class="bead" id="bead15" cx="220" cy="15" r="8" fill="#ffb703" data-friend="Riley" data-date="Mar 15, 2025"/>
+                                <circle class="bead" id="bead16" cx="250" cy="17" r="8" fill="#52b788" data-friend="Sam" data-date="Mar 20, 2025"/>
+                            </svg>
+                            
+                            <div class="connection-popup" id="connectionPopup2">
+                                <button class="close-btn">&times;</button>
+                                <div class="connection-info">
+                                    <svg width="30" height="30">
+                                        <circle cx="15" cy="15" r="14" fill="#f5f5f5" stroke="#333" stroke-width="1"/>
+                                        <circle cx="15" cy="10" r="5" fill="#333"/>
+                                        <path d="M5,20 C5,15 25,15 25,20 C25,25 5,25 5,20" fill="#333"/>
+                                    </svg>
+                                    <div>
+                                        <div class="connection-name" id="connectionName2"></div>
+                                        <div class="connection-date" id="connectionDate2"></div>
+                                    </div>
+                                </div>
+                                <p>Connected at the bowling night event</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-section">
+                        <div style="color: #7b2cbf; margin-bottom: 10px;">Newsletter</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="newsletter2-y">
+                                <label for="newsletter2-y">Y</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="newsletter2-n" checked>
+                                <label for="newsletter2-n">N</label>
+                            </div>
+                        </div>
+                        
+                        <div style="color: #7b2cbf; margin: 10px 0;">Can we contact you?</div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="contact2-y">
+                                <label for="contact2-y">Y</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="contact2-n" checked>
+                                <label for="contact2-n">N</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mentor Profile Mode -->
+            <div id="mentor-profile" class="page">
+                <div class="page-content">
+                    <div class="profile-header">
+                        <h3>Sally ♥</h3>
+                        <p>Pronouns: (She/Her)</p>
+                    </div>
+                    
+                    <div class="profile-image-container">
+                        <div>
+                            <div class="event-title">Sally's Events:</div>
+                            <div class="event-wave">~~~~~~~~~</div>
+                            <div class="event-wave">~~~~~~~~~</div>
+                            <button class="action-button">Message Sally</button>
+                        </div>
+                        <div class="profile-circle mentor-circle">
+                            <svg viewBox="0 0 100 100" width="80" height="80">
+                                <circle cx="50" cy="50" r="45" fill="#f5f5f5" stroke="#42b883" stroke-width="2"/>
+                                <circle cx="50" cy="35" r="15" fill="#333"/>
+                                <path d="M25,70 C25,55 75,55 75,70 C75,85 25,85 25,70" fill="#333"/>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: right; margin-bottom: 20px;">
+                        <div class="role-badge">Mentor</div><br>
+                        <div class="role-badge">Pride Circle Ambassador</div>
+                    </div>
+                    
+                    <div class="profile-section">
+                        <div class="friendship-title">Your Friendship Bracelet</div>
+                        <div class="bracelet-container">
+                            <svg class="bracelet-svg" viewBox="0 0 300 40">
+                                <!-- Base bracelet curve -->
+                                <path d="M20,20 C80,5 220,5 280,20" fill="none" stroke="#f0f0f0" stroke-width="5"/>
+                                
+                                <!-- Clickable beads -->
+                                <circle class="bead" id="bead17" cx="40" cy="20" r="8" fill="#e63946" data-friend="Alex" data-date="Jan 15, 2025"/>
+                                <circle class="bead" id="bead18" cx="70" cy="16" r="8" fill="#ffb703" data-friend="Jamie" data-date="Feb 2, 2025"/>
+                                <circle class="bead" id="bead19" cx="100" cy="13" r="8" fill="#52b788" data-friend="Taylor" data-date="Feb 14, 2025"/>
+                                <circle class="bead" id="bead20" cx="130" cy="12" r="8" fill="#4361ee" data-friend="Morgan" data-date="Feb 28, 2025"/>
+                                <circle class="bead" id="bead21" cx="160" cy="12" r="8" fill="#7209b7" data-friend="Jordan" data-date="Mar 5, 2025"/>
+                                <circle class="bead" id="bead22" cx="190" cy="13" r="8" fill="#e63946" data-friend="Casey" data-date="Mar 10, 2025"/>
+                                <circle class="bead" id="bead23" cx="220" cy="15" r="8" fill="#ffb703" data-friend="Riley" data-date="Mar 15, 2025"/>
+                                <circle class="bead" id="bead24" cx="250" cy="17" r="8" fill="#52b788" data-friend="Sam" data-date="Mar 20, 2025"/>
+                            </svg>
+                            
+                            <div class="connection-popup" id="connectionPopup3">
+                                <button class="close-btn">&times;</button>
+                                <div class="connection-info">
+                                    <svg width="30" height="30">
+                                        <circle cx="15" cy="15" r="14" fill="#f5f5f5" stroke="#333" stroke-width="1"/>
+                                        <circle cx="15" cy="10" r="5" fill="#333"/>
+                                        <path d="M5,20 C5,15 25,15 25,20 C25,25 5,25 5,20" fill="#333"/>
+                                    </svg>
+                                    <div>
+                                        <div class="connection-name" id="connectionName3"></div>
+                                        <div class="connection-date" id="connectionDate3"></div>
+                                    </div>
+                                </div>
+                                <p>Connected at the bowling night event</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Connection Request Page -->
+            <div id="connection-request" class="page">
+                <div class="page-content">
+                    <h3 style="color: #7b2cbf; text-align: center; margin-bottom: 20px;">Thanks for checking in!</h3>
+                    
+                    <p style="text-align: center; color: #7b2cbf; margin-bottom: 15px;">
+                        <span style="font-weight: bold;">* Turn on your bluetooth for *</span>
+                    </p>
+                    
+                    <p style="text-align: center; color: #7b2cbf; font-size: 18px; margin-bottom: 30px;">
+                        ~ TAP to CONNECT ~
+                    </p>
+                    
+                    <div style="display: flex; justify-content: space-between; margin-top: 40px;">
+                        <button class="action-button" id="backFromConnect" style="background-color: white; color: #7b2cbf; border: 2px solid #7b2cbf;">Back</button>
+                        <button class="action-button" id="tapConnectButton">TAP to Connect</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Searching Page -->
+            <div id="searching-connection" class="page">
+                <div class="page-content">
+                    <h3 style="color: #7b2cbf; text-align: center; margin-bottom: 30px;">Tap to Connect</h3>
+                    
+                    <p style="text-align: center; color: #7b2cbf; font-weight: bold; margin-bottom: 10px;">
+                        * Searching Nearby *
+                    </p>
+                    <p style="text-align: center; color: #7b2cbf; margin-bottom: 40px;">
+                        Connections
+                    </p>
+                    
+                    <div class="loading-indicator">
+                        <div class="spinner"></div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 40px;">
+                        <button class="action-button" id="backFromSearching" style="background-color: white; color: #7b2cbf; border: 2px solid #7b2cbf;">Back</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Connection Success Page -->
+            <div id="connection-success" class="page">
+                <div class="page-content">
+                    <h3 style="color: #7b2cbf; text-align: center; margin-bottom: 20px;">Congratulations! You made a connection & added another bead to your bracelet!</h3>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <div class="new-bead-animation">
+                            <svg width="60" height="60" viewBox="0 0 60 60">
+                                <circle cx="30" cy="30" r="20" fill="#e63946" />
+                                <g class="bead-rays">
+                                    <line x1="30" y1="5" x2="30" y2="10" stroke="#e63946" stroke-width="2" />
+                                    <line x1="30" y1="50" x2="30" y2="55" stroke="#e63946" stroke-width="2" />
+                                    <line x1="5" y1="30" x2="10" y2="30" stroke="#e63946" stroke-width="2" />
+                                    <line x1="50" y1="30" x2="55" y2="30" stroke="#e63946" stroke-width="2" />
+                                    <line x1="12" y1="12" x2="16" y2="16" stroke="#e63946" stroke-width="2" />
+                                    <line x1="44" y1="44" x2="48" y2="48" stroke="#e63946" stroke-width="2" />
+                                    <line x1="12" y1="48" x2="16" y2="44" stroke="#e63946" stroke-width="2" />
+                                    <line x1="44" y1="16" x2="48" y2="12" stroke="#e63946" stroke-width="2" />
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <div class="friendship-title" style="margin: 0 auto;">Your Friendship Bracelet</div>
+                        <div style="margin-top: 10px;">
+                            <svg viewBox="0 0 200 30" width="160" height="30">
+                                <ellipse cx="100" cy="15" rx="90" ry="10" fill="none" stroke="url(#rainbow)" stroke-width="5"/>
+                                <defs>
+                                    <linearGradient id="rainbow" x1="0%" y1="0%" x2="100%" y1="0%">
+                                        <stop offset="0%" stop-color="#e63946"/>
+                                        <stop offset="20%" stop-color="#ffb703"/>
+                                        <stop offset="40%" stop-color="#52b788"/>
+                                        <stop offset="60%" stop-color="#4361ee"/>
+                                        <stop offset="80%" stop-color="#7209b7"/>
+                                        <stop offset="100%" stop-color="#e63946"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 40px;">
+                        <button class="action-button" id="doneButton">Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="scripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (!isLoggedIn) {
+                // Redirect to login if not logged in
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Get user settings from localStorage
+            const isMentor = localStorage.getItem('isMentor') === 'true';
+            let ghostMode = localStorage.getItem('ghostMode') === 'true';
+            
+            // Important: Set initial state for ghost mode if not set
+            if (localStorage.getItem('ghostMode') === null) {
+                ghostMode = true; // Default to ghost mode on
+                localStorage.setItem('ghostMode', 'true');
+            }
+            
+            // Show the appropriate profile mode based on settings
+            function updateProfileView() {
+                console.log("Updating profile view: Mentor=" + isMentor + ", Ghost Mode=" + ghostMode);
+                
+                // Hide all profiles first
+                document.getElementById('anonymous-profile').classList.remove('active');
+                document.getElementById('non-ghost-profile').classList.remove('active');
+                document.getElementById('mentor-profile').classList.remove('active');
+                document.getElementById('connection-request').classList.remove('active');
+                document.getElementById('searching-connection').classList.remove('active');
+                document.getElementById('connection-success').classList.remove('active');
+                
+                // Make ONLY the appropriate one active
+                if (isMentor) {
+                    // Mentor always sees mentor view
+                    document.getElementById('mentor-profile').classList.add('active');
+                    console.log("Showing mentor profile");
+                } else if (ghostMode) {
+                    // Ghost mode active shows anonymous profile
+                    document.getElementById('anonymous-profile').classList.add('active');
+                    console.log("Showing anonymous profile");
+                } else {
+                    // Ghost mode off shows regular profile
+                    document.getElementById('non-ghost-profile').classList.add('active');
+                    console.log("Showing non-ghost profile");
+                }
+            }
+            
+            // Function to show a specific page
+            function showPage(pageId) {
+                // Hide all pages
+                document.getElementById('anonymous-profile').classList.remove('active');
+                document.getElementById('non-ghost-profile').classList.remove('active');
+                document.getElementById('mentor-profile').classList.remove('active');
+                document.getElementById('connection-request').classList.remove('active');
+                document.getElementById('searching-connection').classList.remove('active');
+                document.getElementById('connection-success').classList.remove('active');
+                
+                // Show the requested page
+                document.getElementById(pageId).classList.add('active');
+                
+                // Update active button if needed
+                if (pageId !== 'connection-request' && pageId !== 'searching-connection' && 
+                    pageId !== 'connection-success' && pageId !== 'event-detail' && 
+                    pageId !== 'code-of-conduct') {
+                    
+                    document.querySelectorAll('.nav-button').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    if (pageId === 'profile') {
+                        document.querySelector('[data-page="profile"]').classList.add('active');
+                    }
+                }
+            }
+            
+            // Run immediately to set initial view
+            updateProfileView();
+            
+            // Handle ghost mode toggle for anonymous profile
+            document.getElementById('ghostOn').addEventListener('click', function() {
+                this.classList.add('active');
+                document.getElementById('ghostOff').classList.remove('active');
+                ghostMode = true;
+                localStorage.setItem('ghostMode', 'true');
+                // No need to update view - already in anonymous mode
+            });
+            
+            document.getElementById('ghostOff').addEventListener('click', function() {
+                this.classList.add('active');
+                document.getElementById('ghostOn').classList.remove('active');
+                ghostMode = false;
+                localStorage.setItem('ghostMode', 'false');
+                updateProfileView(); // Switch to non-ghost view
+            });
+            
+            // Handle ghost mode toggle for non-ghost profile
+            document.getElementById('ghostOn2').addEventListener('click', function() {
+                this.classList.add('active');
+                document.getElementById('ghostOff2').classList.remove('active');
+                ghostMode = true;
+                localStorage.setItem('ghostMode', 'true');
+                updateProfileView(); // Switch to anonymous view
+            });
+            
+            document.getElementById('ghostOff2').addEventListener('click', function() {
+                this.classList.add('active');
+                document.getElementById('ghostOn2').classList.remove('active');
+                ghostMode = false;
+                localStorage.setItem('ghostMode', 'false');
+                // No need to update view - already in non-ghost mode
+            });
+            
+            // Handle bracelet beads clicks (for all profile types)
+            const allBeads = document.querySelectorAll('.bead');
+            const popups = [
+                document.getElementById('connectionPopup'),
+                document.getElementById('connectionPopup2'),
+                document.getElementById('connectionPopup3')
+            ];
+            
+            allBeads.forEach(bead => {
+                bead.addEventListener('click', function(e) {
+                    // Get the data for this bead
+                    const friend = this.getAttribute('data-friend');
+                    const date = this.getAttribute('data-date');
+                    
+                    // Determine which popup to use based on active profile
+                    let popup, connectionName, connectionDate;
+                    if (document.getElementById('anonymous-profile').classList.contains('active')) {
+                        popup = popups[0];
+                        connectionName = document.getElementById('connectionName');
+                        connectionDate = document.getElementById('connectionDate');
+                    } else if (document.getElementById('non-ghost-profile').classList.contains('active')) {
+                        popup = popups[1];
+                        connectionName = document.getElementById('connectionName2');
+                        connectionDate = document.getElementById('connectionDate2');
+                    } else {
+                        popup = popups[2];
+                        connectionName = document.getElementById('connectionName3');
+                        connectionDate = document.getElementById('connectionDate3');
+                    }
+                    
+                    // Fill popup with data
+                    connectionName.textContent = friend;
+                    connectionDate.textContent = `Connected: ${date}`;
+                    
+                    // Position popup near the clicked bead
+                    const beadRect = this.getBoundingClientRect();
+                    const containerRect = this.closest('.bracelet-container').getBoundingClientRect();
+                    
+                    popup.style.left = (beadRect.left - containerRect.left + beadRect.width/2 - 90) + 'px';
+                    
+                    // Hide all popups first
+                    popups.forEach(p => p.classList.remove('active'));
+                    
+                    // Show the correct popup
+                    popup.classList.add('active');
+                    
+                    // Prevent event from bubbling up
+                    e.stopPropagation();
+                });
+            });
+            
+            // Close popups when clicking the close buttons
+            document.querySelectorAll('.close-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    popups.forEach(popup => popup.classList.remove('active'));
+                });
+            });
+            
+            // Close popups when clicking elsewhere
+            document.addEventListener('click', function(e) {
+                if (!e.target.classList.contains('bead')) {
+                    popups.forEach(popup => popup.classList.remove('active'));
+                }
+            });
+            
+            // Radio-like behavior for checkbox groups
+            function setupCheckboxGroup(group) {
+                const checkboxes = document.querySelectorAll(`input[id^="${group}"]`);
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                        checkboxes.forEach(cb => {
+                            if (cb !== this) cb.checked = false;
+                        });
+                    });
+                });
+            }
+            
+            setupCheckboxGroup('newsletter');
+            setupCheckboxGroup('contact');
+            setupCheckboxGroup('newsletter2');
+            setupCheckboxGroup('contact2');
+            
+            // Load registered events if available
+            const registeredEvents = JSON.parse(localStorage.getItem('registeredEvents') || '[]');
+            const eventsLists = [
+                document.getElementById('anonEventsList'),
+                document.getElementById('nonGhostEventsList')
+            ];
+            
+            if (registeredEvents.length > 0) {
+                eventsLists.forEach(eventList => {
+                    if (!eventList) return; // Skip if element doesn't exist
+                    
+                    let html = '';
+                    registeredEvents.forEach((event, index) => {
+                        html += `<li><span class="event-item">${index + 1}) ${event.name}</span></li>`;
+                    });
+                    
+                    // Fill remaining slots if needed
+                    for (let i = registeredEvents.length; i < 2; i++) {
+                        html += `<li><span class="event-item">${i + 1}) <span class="event-wave">~~~~~</span></span></li>`;
+                    }
+                    
+                    eventList.innerHTML = html;
+                });
+            }
+            
+            // Connection flow functions
+            function initializeConnectionFlow() {
+                // Get the Event items from the profile page
+                const eventItems = document.querySelectorAll('.event-item');
+                
+                // Add click event to the event items
+                eventItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        // Show the connection request page
+                        showPage('connection-request');
+                    });
+                });
+                
+                // Set up the "TAP to Connect" button
+                document.getElementById('tapConnectButton').addEventListener('click', function() {
+                    // Show the searching connections page
+                    showPage('searching-connection');
+                    
+                    // Simulate searching for 3 seconds, then show success
+                    setTimeout(function() {
+                        showPage('connection-success');
+                        
+                        // Add the new connection to the bracelets
+                        addNewConnectionToBracelets();
+                    }, 3000);
+                });
+                
+                // Set up back buttons
+                document.getElementById('backFromConnect').addEventListener('click', function() {
+                    // Go back to the active profile page
+                    if (ghostMode && !isMentor) {
+                        showPage('anonymous-profile');
+                    } else if (!ghostMode && !isMentor) {
+                        showPage('non-ghost-profile');
+                    } else {
+                        showPage('mentor-profile');
+                    }
+                });
+                
+                document.getElementById('backFromSearching').addEventListener('click', function() {
+                    // Go back to connection request page
+                    showPage('connection-request');
+                });
+                
+                // Set up done button on success page
+                document.getElementById('doneButton').addEventListener('click', function() {
+                    // Go back to the active profile page
+                    if (ghostMode && !isMentor) {
+                        showPage('anonymous-profile');
+                    } else if (!ghostMode && !isMentor) {
+                        showPage('non-ghost-profile');
+                    } else {
+                        showPage('mentor-profile');
+                    }
+                });
+            }
+
+            // Function to add a new connection to all bracelets
+            function addNewConnectionToBracelets() {
+                // Get today's date in format: "Mar 5, 2025"
+                const today = new Date();
+                const options = { month: 'short', day: 'numeric', year: 'numeric' };
+                const formattedDate = today.toLocaleDateString('en-US', options);
+                
+                // Create new friend data
+                const newFriend = {
+                    name: "New Friend",
+                    date: formattedDate
+                };
+                
+                // Store connection in localStorage
+                const connections = JSON.parse(localStorage.getItem('braceletConnections') || '[]');
+                connections.push(newFriend);
+                localStorage.setItem('braceletConnections', JSON.stringify(connections));
+                
+                // Update the visual bracelet with new bead would happen here
+                // For this example, we'll just log the new connection
+                console.log("Added new connection:", newFriend);
+            }
+            
+            // For demo purposes only: Set/Toggle mentor status
+            function toggleMentorStatus() {
+                const currentStatus = localStorage.getItem('isMentor') === 'true';
+                const newStatus = !currentStatus;
+                localStorage.setItem('isMentor', newStatus);
+                console.log("Toggled mentor status to: " + newStatus);
+                location.reload(); // Refresh to show change
+            }
+            
+            // Add a hidden button to toggle mentor status (for testing only)
+            const mentorToggle = document.createElement('button');
+            mentorToggle.style.position = 'fixed';
+            mentorToggle.style.bottom = '5px';
+            mentorToggle.style.right = '5px';
+            mentorToggle.style.opacity = '0.3';
+            mentorToggle.style.zIndex = '1000';
+            mentorToggle.style.padding = '5px';
+            mentorToggle.textContent = 'Toggle Mentor (Test Only)';
+            mentorToggle.addEventListener('click', toggleMentorStatus);
+            document.body.appendChild(mentorToggle);
+            
+            // Handle logout
+            document.getElementById('logoutButton').addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'login.html';
+            });
+            
+            // Initialize the connection flow
+            initializeConnectionFlow();
+        });
+    </script>
+</body>
+</html>

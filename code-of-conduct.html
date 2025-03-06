@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code of Conduct - UW Pride Circle</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header and Navigation -->
+        <div class="header">
+            <div class="logo"><span class="uw-text">UW</span> <span class="pride-circle-text">Pride Circle</span></div>
+            <div class="navigation">
+                <button class="nav-button" onclick="location.href='index.html'">Home</button>
+                <button class="nav-button" onclick="location.href='about.html'">About</button>
+                <button class="nav-button active" onclick="location.href='events.html'">Events</button>
+                <button class="nav-button" onclick="location.href='resources.html'">Resources</button>
+                <div class="profile-dropdown">
+                    <button class="nav-button" onclick="location.href='profile.html'">Profile</button>
+                    <div class="dropdown-content">
+                        <a href="login.html" id="logoutButton">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- Code of Conduct Page Content -->
+            <div class="page active">
+                <div class="page-content">
+                    <a href="event-detail.html" class="back-button" id="backToEvent">← Back to Event</a>
+                    <h3>UW PrideCircle's Code of Conduct</h3>
+                    <div class="conduct-content">
+                        <p>Acceptance is important to us. All members/users of the application must be respectful towards all others regardless of background, views or personal identities.</p>
+                        <p>Inappropriate comments/jokes that target or mock others are unacceptable and go against our community values of inclusivity and mutual respect.</p>
+                        <p>Users found in violation of these guidelines may have their accounts suspended without judgment or warning.</p>
+                        <p>By signing below, you consent to follow these principles and understand that failure to do so may result in account termination.</p>
+                        <div class="signature-section">
+                            <label for="signatureInput">Your Name (Signature):</label>
+                            <input type="text" id="signatureInput" class="signature-input" placeholder="Type your full name">
+                            <button id="agreeButton" class="conduct-button">I Agree</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="scripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Preserve the event parameter when going back
+            const urlParams = new URLSearchParams(window.location.search);
+            const eventType = urlParams.get('event');
+            
+            if (eventType) {
+                document.getElementById('backToEvent').href = 'event-detail.html?event=' + eventType;
+            }
+            
+            // Handle agreement button
+            document.getElementById('agreeButton').addEventListener('click', function(e) {
+                e.preventDefault();
+                const signature = document.getElementById('signatureInput').value.trim();
+                
+                if (signature === '') {
+                    alert('Please enter your name to agree to the code of conduct.');
+                    return;
+                }
+                
+                // Store the fact that user has agreed
+                localStorage.setItem('conductAgreed', 'true');
+                
+                // Redirect back to event details
+                window.location.href = document.getElementById('backToEvent').href;
+            });
+        });
+    </script>
+</body>
+</html>

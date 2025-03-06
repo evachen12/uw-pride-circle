@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UW Pride Circle</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header and Navigation -->
+        <div class="header">
+            <div class="logo"><span class="uw-text">UW</span> <span class="pride-circle-text">Pride Circle</span></div>
+            <div class="navigation">
+                <button class="nav-button active" onclick="location.href='index.html'">Home</button>
+                <button class="nav-button" onclick="location.href='about.html'">About</button>
+                <button class="nav-button" onclick="location.href='events.html'">Events</button>
+                <button class="nav-button" onclick="location.href='resources.html'">Resources</button>
+                <div class="profile-dropdown">
+                    <button class="nav-button" onclick="location.href='profile.html'">Profile</button>
+                    <div class="dropdown-content">
+                        <a href="login.html" id="logoutButton">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- Home Page Content -->
+            <div class="page active">
+                <div class="page-content">
+                    <h3 class="welcome-text">Welcome to UW Pride Circle!</h3>
+                    <p>A safe and supportive community for LGBTQ+ students and allies at the University of Washington.</p>
+                    
+                    <!-- Privacy Modes Information -->
+                    <div class="privacy-note">
+                        <h4 style="color: #7b2cbf; margin-bottom: 10px;">Privacy Mode Guide</h4>
+                        <p><strong>Ghost Mode 👻</strong> – Your profile is hidden from other users, and you would appear as 'anonymous' to other users. You can browse the platform privately without others knowing you're online.</p>
+                        
+                        <p><strong>Semi-Open Mode 😶‍🌫️</strong> – Your profile is visible, but only to certain users (e.g., friends, mutual connections, or approved members). Others may see limited details unless you interact with them.</p>
+                        
+                        <p><strong>Mentor Mode 🎓</strong> – Your profile is public to those seeking guidance. Users can easily find and message you for mentorship opportunities, and your status signals openness to offering advice or support.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="scripts.js"></script>
+</body>
+</html>
