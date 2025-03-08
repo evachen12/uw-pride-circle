@@ -13,6 +13,11 @@ body {
     height: 100vh;
     border: 1px solid #ccc;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 24px;
+    overflow: hidden;
+    background-color: #fcf8fd;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    border: none;
 }
 
 .app-container {
@@ -34,7 +39,8 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(255, 255, 255, 0.6); /* Lighter overlay */
+    background-color: rgba(255, 255, 255, 0.5); /* More transparent overlay */
+    backdrop-filter: blur(1px); /* Slight blur effect */
     z-index: 0;
 }
 
@@ -42,7 +48,12 @@ body {
     text-align: center;
     padding: 10px 0;
     margin-bottom: 15px;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(2px);
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(123, 44, 191, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 0 5px 15px 5px;
     position: relative;
     z-index: 1;
 }
@@ -70,27 +81,46 @@ body {
     color: transparent;
 }
 
+/* Navigation Styles - Fixed for alignment */
 .navigation {
     display: flex;
     justify-content: space-around;
+    align-items: center;
     padding: 4px;
     margin-top: 5px;
     background-color: transparent;
     position: relative;
     z-index: 1;
+    flex-wrap: nowrap;
 }
 
 .nav-button {
+    flex: 1;
     border: 1px solid rgba(224, 224, 224, 0.3);
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 1px 3px rgba(123, 44, 191, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.5);
     font-size: 14px;
     color: #333;
     cursor: pointer;
-    padding: 8px 12px;
-    border-radius: 4px;
+    border-radius: 10px;
     transition: all 0.2s ease;
     text-align: center;
     margin: 0 2px;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    max-width: 85px;
+}
+
+.profile-dropdown {
+    flex: 1;
+    max-width: 85px;
+    margin: 0 2px;
+}
+
+.profile-dropdown .nav-button {
+    width: 100%;
+    margin: 0;
 }
 
 .nav-button:hover, .nav-button.active {
@@ -105,11 +135,6 @@ body {
 }
 
 /* Dropdown styles for Profile/Logout */
-.profile-dropdown {
-    position: relative;
-    display: inline-block;
-}
-
 .dropdown-content {
     display: none;
     position: absolute;
@@ -171,20 +196,21 @@ body {
 }
 
 .page-content {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(1px);
+    border-radius: 24px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     padding: 15px;
-    border-radius: 22px;
-    border: 1px solid rgba(224, 224, 224, 0.05);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.01);
 }
 
 .privacy-note {
-    border: 1px solid rgba(217, 199, 233, 0.4);
-    border-radius: 8px;
-    padding: 10px 15px;
     background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 3px 10px rgba(123, 44, 191, 0.03);
+    padding: 10px 15px;
     margin-top: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .privacy-note p {
@@ -282,8 +308,13 @@ body {
 
 .calendar {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 2px;
     margin-top: 5px;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .calendar th {
@@ -299,8 +330,9 @@ body {
     height: 70px;
     vertical-align: top;
     padding: 5px;
-    border: 1px solid rgba(224, 224, 224, 0.3);
-    background-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 4px;
 }
 
 .calendar td.today {
@@ -558,8 +590,8 @@ body {
 
 .profile-section {
     margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(123, 44, 191, 0.1);
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(123, 44, 191, 0.05);
 }
 
 .profile-section:last-child {
@@ -671,11 +703,12 @@ body {
 
 .connection-popup {
     position: absolute;
-    background-color: white;
-    border: 1px solid #7b2cbf;
-    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(3px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     padding: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     z-index: 100;
     top: -80px;
     display: none;
