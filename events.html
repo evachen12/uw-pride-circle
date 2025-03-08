@@ -34,7 +34,7 @@
                     <div class="calendar-header">
                         <div class="month-selector">
                             <button class="month-btn" id="prevMonth">&#10094;</button>
-                            <h4 id="currentMonth">March 2025</h4>
+                            <h4 id="currentMonth">Loading...</h4>
                             <button class="month-btn" id="nextMonth">&#10095;</button>
                         </div>
                     </div>
@@ -52,55 +52,7 @@
                             </tr>
                         </thead>
                         <tbody id="calendarBody">
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>5</td>
-                            </tr>
-                            <tr>
-                                <td>6</td>
-                                <td>7</td>
-                                <td>8</td>
-                                <td>9</td>
-                                <td>10</td>
-                                <td>11</td>
-                                <td>12</td>
-                            </tr>
-                            <tr>
-                                <td>13</td>
-                                <td>14</td>
-                                <td>15
-                                    <a href="event-detail.html?event=pride-kickoff" class="calendar-event" data-event="pride-kickoff">Pride Week Kickoff</a>
-                                </td>
-                                <td class="today">16</td>
-                                <td>17</td>
-                                <td>18</td>
-                                <td>19</td>
-                            </tr>
-                            <tr>
-                                <td>20</td>
-                                <td>21</td>
-                                <td>22
-                                    <a href="event-detail.html?event=bowling-night" class="calendar-event" data-event="bowling-night">Bowling Night @ HUB</a>
-                                </td>
-                                <td>23</td>
-                                <td>24</td>
-                                <td>25</td>
-                                <td>26</td>
-                            </tr>
-                            <tr>
-                                <td>27</td>
-                                <td>28</td>
-                                <td>29</td>
-                                <td>30</td>
-                                <td>31</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            <!-- Calendar will be populated by JavaScript -->
                         </tbody>
                     </table>
                 </div>
@@ -109,5 +61,135 @@
     </div>
     
     <script src="scripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get DOM elements
+            const currentMonthElement = document.getElementById('currentMonth');
+            const prevMonthButton = document.getElementById('prevMonth');
+            const nextMonthButton = document.getElementById('nextMonth');
+            const calendarBody = document.getElementById('calendarBody');
+            
+            // Define events - format: YYYY-MM-DD
+            const events = {
+                "2025-03-15": {
+                    name: "Pride Week Kickoff",
+                    url: "event-detail.html?event=pride-kickoff"
+                },
+                "2025-03-22": {
+                    name: "Bowling Night @ HUB",
+                    url: "event-detail.html?event=bowling-night"
+                },
+                "2025-03-29": {
+                    name: "LGBTQ+ Film Night",
+                    url: "event-detail.html?event=film-night"
+                },
+                "2025-04-05": {
+                    name: "Coffee Meetup",
+                    url: "event-detail.html?event=coffee-meetup"
+                },
+                "2025-04-12": {
+                    name: "Study Group",
+                    url: "event-detail.html?event=study-group"
+                },
+                "2025-04-19": {
+                    name: "Game Night",
+                    url: "event-detail.html?event=game-night"
+                }
+            };
+            
+            // Get current date and set it as the default
+            const today = new Date();
+            let currentMonth = today.getMonth();
+            let currentYear = today.getFullYear();
+            
+            // Initialize calendar
+            renderCalendar(currentMonth, currentYear);
+            
+            // Event listeners for prev/next month
+            prevMonthButton.addEventListener('click', function() {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                renderCalendar(currentMonth, currentYear);
+            });
+            
+            nextMonthButton.addEventListener('click', function() {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                renderCalendar(currentMonth, currentYear);
+            });
+            
+            // Render the calendar for a given month and year
+            function renderCalendar(month, year) {
+                // Update month/year display
+                const monthNames = ["January", "February", "March", "April", "May", "June", 
+                                   "July", "August", "September", "October", "November", "December"];
+                currentMonthElement.textContent = `${monthNames[month]} ${year}`;
+                
+                // Get first day of month and total days in month
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                
+                // Clear previous calendar
+                calendarBody.innerHTML = '';
+                
+                // Variables to track calendar rendering
+                let date = 1;
+                let calendarHTML = '';
+                
+                // Create calendar rows
+                for (let i = 0; i < 6; i++) {
+                    // Create a row
+                    let row = '<tr>';
+                    
+                    // Create cells for each day of the week
+                    for (let j = 0; j < 7; j++) {
+                        if (i === 0 && j < firstDay) {
+                            // Empty cells before the first day of the month
+                            row += '<td></td>';
+                        } else if (date > daysInMonth) {
+                            // Empty cells after the last day of the month
+                            row += '<td></td>';
+                        } else {
+                            // Create ISO date string for event lookup
+                            const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+                            const isToday = date === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+                            
+                            // Add the "today" class if this is today's date
+                            const todayClass = isToday ? ' class="today"' : '';
+                            
+                            // Start cell with date
+                            row += `<td${todayClass}>${date}`;
+                            
+                            // Add event if exists for this date
+                            if (events[dateString]) {
+                                const event = events[dateString];
+                                row += `<a href="${event.url}" class="calendar-event" data-event="${event.url.split('=')[1]}">${event.name}</a>`;
+                            }
+                            
+                            // Close cell
+                            row += '</td>';
+                            date++;
+                        }
+                    }
+                    row += '</tr>';
+                    calendarHTML += row;
+                    
+                    // Stop rendering if we've displayed all days in the month
+                    if (date > daysInMonth) {
+                        break;
+                    }
+                }
+                
+                // Update calendar with generated HTML
+                calendarBody.innerHTML = calendarHTML;
+            }
+        });
+    </script>
 </body>
 </html>
