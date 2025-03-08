@@ -69,7 +69,7 @@
                                 <path d="M20,20 C80,5 220,5 280,20" fill="none" stroke="#f0f0f0" stroke-width="5"/>
                                 
                                 <!-- Clickable beads -->
-                                <circle class="bead" id="bead1" cx="40" cy="20" r="8" fill="#e63946" data-friend="Alex" data-date="Jan 15, 2025"/>
+                                <circle class="bead" id="bead1" cx="40" cy="20" r="8" fill="#e63946" data-friend="Sally" data-date="Jan 15, 2025"/>
                                 <circle class="bead" id="bead2" cx="70" cy="16" r="8" fill="#ffb703" data-friend="Jamie" data-date="Feb 2, 2025"/>
                                 <circle class="bead" id="bead3" cx="100" cy="13" r="8" fill="#52b788" data-friend="Taylor" data-date="Feb 14, 2025"/>
                                 <circle class="bead" id="bead4" cx="130" cy="12" r="8" fill="#4361ee" data-friend="Morgan" data-date="Feb 28, 2025"/>
@@ -170,7 +170,7 @@
                                 <path d="M20,20 C80,5 220,5 280,20" fill="none" stroke="#f0f0f0" stroke-width="5"/>
                                 
                                 <!-- Clickable beads -->
-                                <circle class="bead" id="bead9" cx="40" cy="20" r="8" fill="#e63946" data-friend="Alex" data-date="Jan 15, 2025"/>
+                                <circle class="bead" id="bead9" cx="40" cy="20" r="8" fill="#e63946" data-friend="Sally" data-date="Jan 15, 2025"/>
                                 <circle class="bead" id="bead10" cx="70" cy="16" r="8" fill="#ffb703" data-friend="Jamie" data-date="Feb 2, 2025"/>
                                 <circle class="bead" id="bead11" cx="100" cy="13" r="8" fill="#52b788" data-friend="Taylor" data-date="Feb 14, 2025"/>
                                 <circle class="bead" id="bead12" cx="130" cy="12" r="8" fill="#4361ee" data-friend="Morgan" data-date="Feb 28, 2025"/>
@@ -230,16 +230,16 @@
             <div id="mentor-profile" class="page">
                 <div class="page-content">
                     <div class="profile-header">
-                        <h3>Sally ♥</h3>
+                        <h3>Sally</h3>
                         <p>Pronouns: (She/Her)</p>
                     </div>
                     
                     <div class="profile-image-container">
                         <div>
                             <div class="event-title">Sally's Events:</div>
+                            <div style="margin-bottom: 8px;">Bowling Night</div>
                             <div class="event-wave">~~~~~~~~~</div>
-                            <div class="event-wave">~~~~~~~~~</div>
-                            <button class="action-button">Message Sally</button>
+                            <button class="action-button" onclick="location.href='message.html?recipient=Sally'">Message Sally</button>
                         </div>
                         <div class="profile-circle mentor-circle">
                             <svg viewBox="0 0 100 100" width="80" height="80">
@@ -263,7 +263,7 @@
                                 <path d="M20,20 C80,5 220,5 280,20" fill="none" stroke="#f0f0f0" stroke-width="5"/>
                                 
                                 <!-- Clickable beads -->
-                                <circle class="bead" id="bead17" cx="40" cy="20" r="8" fill="#e63946" data-friend="Alex" data-date="Jan 15, 2025"/>
+                                <circle class="bead" id="bead17" cx="40" cy="20" r="8" fill="#e63946" data-friend="Sally" data-date="Jan 15, 2025"/>
                                 <circle class="bead" id="bead18" cx="70" cy="16" r="8" fill="#ffb703" data-friend="Jamie" data-date="Feb 2, 2025"/>
                                 <circle class="bead" id="bead19" cx="100" cy="13" r="8" fill="#52b788" data-friend="Taylor" data-date="Feb 14, 2025"/>
                                 <circle class="bead" id="bead20" cx="130" cy="12" r="8" fill="#4361ee" data-friend="Morgan" data-date="Feb 28, 2025"/>
@@ -388,6 +388,19 @@
     <script src="scripts.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Check if we're viewing someone else's profile
+            const urlParams = new URLSearchParams(window.location.search);
+            const viewProfile = urlParams.get('view');
+            
+            if (viewProfile) {
+                // Show the mentor profile but customize it for the viewed person
+                document.getElementById('mentor-profile').classList.add('active');
+                document.querySelector('#mentor-profile h3').textContent = viewProfile;
+                
+                // No need for login check in this case
+                return;
+            }
+            
             // Check if user is logged in
             const isLoggedIn = localStorage.getItem('isLoggedIn');
             if (!isLoggedIn) {
@@ -529,8 +542,8 @@
                         connectionDate = document.getElementById('connectionDate3');
                     }
                     
-                    // Fill popup with data
-                    connectionName.textContent = friend;
+                    // Fill popup with data and make name clickable
+                    connectionName.innerHTML = `<a href="profile.html?view=${friend}" style="color: #7b2cbf; text-decoration: none;">${friend}</a>`;
                     connectionDate.textContent = `Connected: ${date}`;
                     
                     // Position popup near the clicked bead

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - UW Pride Circle</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .message-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(123, 44, 191, 0.2);
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 2px solid #42b883;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .message-username {
+            font-weight: bold;
+            color: #7b2cbf;
+        }
+
+        .message-pronouns {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .message-options {
+            position: absolute;
+            right: 0;
+            top: 10px;
+        }
+
+        .options-button {
+            background: none;
+            border: none;
+            color: #c7b1da;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .options-dropdown {
+            position: absolute;
+            right: 0;
+            top: 25px;
+            background: white;
+            border: 1px solid rgba(123, 44, 191, 0.2);
+            border-radius: 5px;
+            width: 150px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 100;
+            display: none;
+        }
+
+        .options-dropdown.show {
+            display: block;
+        }
+
+        .option-item {
+            padding: 10px;
+            border-bottom: 1px solid rgba(123, 44, 191, 0.1);
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .option-item:last-child {
+            border-bottom: none;
+        }
+
+        .option-item:hover {
+            background-color: rgba(123, 44, 191, 0.1);
+        }
+
+        .option-item.danger {
+            color: #e63946;
+        }
+
+        .leave-button {
+            display: flex;
+            align-items: center;
+            color: #7b2cbf;
+            border: 1px solid #7b2cbf;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-right: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            background: white;
+        }
+
+        .leave-button:hover {
+            background-color: rgba(123, 44, 191, 0.1);
+        }
+
+        .message-body {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 10px;
+            border-radius: 18px;
+            margin-bottom: 8px;
+            word-wrap: break-word;
+        }
+
+        .message-sent {
+            align-self: flex-end;
+            background-color: #7b2cbf;
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message-received {
+            align-self: flex-start;
+            background-color: #e9e9e9;
+            border-bottom-left-radius: 5px;
+        }
+
+        .message-time {
+            font-size: 10px;
+            margin-top: 3px;
+            color: rgba(0,0,0,0.5);
+        }
+
+        .message-sent .message-time {
+            color: rgba(255,255,255,0.7);
+            text-align: right;
+        }
+
+        .message-input-container {
+            display: flex;
+            padding: 10px 0;
+            border-top: 1px solid rgba(123, 44, 191, 0.2);
+        }
+
+        .message-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            margin-right: 10px;
+        }
+
+        .send-button {
+            background-color: #7b2cbf;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .message-empty-state {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #7b2cbf;
+            opacity: 0.7;
+            text-align: center;
+        }
+
+        .message-empty-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 20% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 350px;
+        }
+
+        .modal-title {
+            color: #7b2cbf;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .modal-text {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .modal-cancel {
+            padding: 8px 15px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal-confirm {
+            padding: 8px 15px;
+            background-color: #7b2cbf;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal-confirm.danger {
+            background-color: #e63946;
+        }
+
+        .report-options {
+            margin-bottom: 15px;
+        }
+
+        .report-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .report-option input {
+            margin-right: 8px;
+        }
+
+        .report-text {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            resize: vertical;
+            min-height: 60px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header and Navigation -->
+        <div class="header">
+            <div class="logo"><span class="uw-text">UW</span> <span class="pride-circle-text">Pride Circle</span></div>
+            <div class="navigation">
+                <button class="nav-button" onclick="location.href='index.html'">Home</button>
+                <button class="nav-button" onclick="location.href='about.html'">About</button>
+                <button class="nav-button" onclick="location.href='events.html'">Events</button>
+                <button class="nav-button" onclick="location.href='resources.html'">Resources</button>
+                <div class="profile-dropdown">
+                    <button class="nav-button" onclick="location.href='profile.html'">Profile</button>
+                    <div class="dropdown-content">
+                        <a href="login.html" id="logoutButton">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- Message Page Content -->
+            <div class="page active">
+                <div class="page-content" style="height: calc(100vh - 150px); padding-bottom: 0;">
+                    
+                    <div class="message-container">
+                        <div class="message-header">
+                            <div class="message-avatar">
+                                <svg viewBox="0 0 40 40" width="36" height="36">
+                                    <circle cx="20" cy="20" r="18" fill="#f5f5f5" stroke="#42b883" stroke-width="1"/>
+                                    <circle cx="20" cy="14" r="6" fill="#333"/>
+                                    <path d="M10,28 C10,22 30,22 30,28 C30,34 10,34 10,28" fill="#333"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="message-username" id="messageRecipient">Sally</div>
+                                <div class="message-pronouns">She/Her • Mentor</div>
+                            </div>
+                            
+                            <div class="message-options">
+                                <button class="options-button" id="optionsButton">•••</button>
+                                <div class="options-dropdown" id="optionsDropdown">
+                                    <div class="option-item" id="leaveOption" onclick="location.href='profile.html'">
+                                        <span style="margin-right: 5px;">←</span> Leave Chat
+                                    </div>
+                                    <div class="option-item" id="reportOption">Report</div>
+                                    <div class="option-item danger" id="blockOption">Block</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="message-body" id="messagesContainer">
+                            <!-- Empty state for new conversations -->
+                            <div class="message-empty-state" id="emptyMessageState">
+                                <div class="message-empty-icon">✉️</div>
+                                <p>Start a conversation with Sally</p>
+                                <p style="font-size: 12px; margin-top: 5px;">All messages are confidential and only seen by you and Sally</p>
+                            </div>
+                            
+                            <!-- Messages will be populated here -->
+                            <div class="message message-received" style="display: none;">
+                                <div>Hi there! How can I help?</div>
+                                <div class="message-time">3:30 PM</div>
+                            </div>
+                            
+                            <div class="message message-sent" style="display: none;">
+                                <div>Hello! I had a question about the upcoming event.</div>
+                                <div class="message-time">3:32 PM</div>
+                            </div>
+                        </div>
+                        
+                        <div class="message-input-container">
+                            <input type="text" id="messageInput" class="message-input" placeholder="Type a message...">
+                            <button id="sendButton" class="send-button">↑</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Report Modal -->
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">Report Conversation</div>
+            <div class="modal-text">Please select a reason for reporting this conversation:</div>
+            
+            <div class="report-options">
+                <div class="report-option">
+                    <input type="radio" id="report1" name="reportReason" value="inappropriate">
+                    <label for="report1">Inappropriate content</label>
+                </div>
+                <div class="report-option">
+                    <input type="radio" id="report2" name="reportReason" value="harassment">
+                    <label for="report2">Harassment</label>
+                </div>
+                <div class="report-option">
+                    <input type="radio" id="report3" name="reportReason" value="spam">
+                    <label for="report3">Spam</label>
+                </div>
+                <div class="report-option">
+                    <input type="radio" id="report4" name="reportReason" value="other">
+                    <label for="report4">Other</label>
+                </div>
+            </div>
+            
+            <textarea class="report-text" id="reportDetails" placeholder="Please provide additional details..."></textarea>
+            
+            <div class="modal-buttons">
+                <button class="modal-cancel" id="cancelReport">Cancel</button>
+                <button class="modal-confirm" id="confirmReport">Submit Report</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Block Modal -->
+    <div id="blockModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-title">Block User</div>
+            <div class="modal-text">Are you sure you want to block <span id="blockUsername">Sally</span>? You will no longer receive messages from this user.</div>
+            <div class="modal-buttons">
+                <button class="modal-cancel" id="cancelBlock">Cancel</button>
+                <button class="modal-confirm danger" id="confirmBlock">Block</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="scripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get message recipient from URL parameter if available
+            const urlParams = new URLSearchParams(window.location.search);
+            const recipient = urlParams.get('recipient');
+            
+            if (recipient) {
+                document.getElementById('messageRecipient').textContent = recipient;
+                document.getElementById('blockUsername').textContent = recipient;
+            }
+            
+            // Options dropdown
+            const optionsButton = document.getElementById('optionsButton');
+            const optionsDropdown = document.getElementById('optionsDropdown');
+            
+            optionsButton.addEventListener('click', function() {
+                optionsDropdown.classList.toggle('show');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!event.target.matches('.options-button')) {
+                    if (optionsDropdown.classList.contains('show')) {
+                        optionsDropdown.classList.remove('show');
+                    }
+                }
+            });
+            
+            // Report and Block modals
+            const reportOption = document.getElementById('reportOption');
+            const blockOption = document.getElementById('blockOption');
+            const reportModal = document.getElementById('reportModal');
+            const blockModal = document.getElementById('blockModal');
+            const cancelReport = document.getElementById('cancelReport');
+            const confirmReport = document.getElementById('confirmReport');
+            const cancelBlock = document.getElementById('cancelBlock');
+            const confirmBlock = document.getElementById('confirmBlock');
+            
+            reportOption.addEventListener('click', function() {
+                reportModal.style.display = 'block';
+                optionsDropdown.classList.remove('show');
+            });
+            
+            blockOption.addEventListener('click', function() {
+                blockModal.style.display = 'block';
+                optionsDropdown.classList.remove('show');
+            });
+            
+            cancelReport.addEventListener('click', function() {
+                reportModal.style.display = 'none';
+                document.getElementById('reportDetails').value = '';
+                document.querySelectorAll('input[name="reportReason"]').forEach(radio => {
+                    radio.checked = false;
+                });
+            });
+            
+            confirmReport.addEventListener('click', function() {
+                // Get selected reason
+                const selected = document.querySelector('input[name="reportReason"]:checked');
+                const details = document.getElementById('reportDetails').value.trim();
+                
+                if (!selected) {
+                    alert('Please select a reason for reporting.');
+                    return;
+                }
+                
+                // In a real app, you would send this data to your server
+                console.log('Report submitted:', {
+                    reason: selected.value,
+                    details: details,
+                    user: document.getElementById('messageRecipient').textContent
+                });
+                
+                // Close modal and show confirmation
+                reportModal.style.display = 'none';
+                alert('Thank you for your report. Our team will review it shortly.');
+                
+                // Reset form
+                document.getElementById('reportDetails').value = '';
+                document.querySelectorAll('input[name="reportReason"]').forEach(radio => {
+                    radio.checked = false;
+                });
+            });
+            
+            cancelBlock.addEventListener('click', function() {
+                blockModal.style.display = 'none';
+            });
+            
+            confirmBlock.addEventListener('click', function() {
+                // In a real app, you would send this data to your server
+                const blockedUser = document.getElementById('messageRecipient').textContent;
+                console.log('User blocked:', blockedUser);
+                
+                // Close modal and redirect to profile
+                blockModal.style.display = 'none';
+                alert(`${blockedUser} has been blocked.`);
+                window.location.href = 'profile.html';
+            });
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === reportModal) {
+                    reportModal.style.display = 'none';
+                }
+                if (event.target === blockModal) {
+                    blockModal.style.display = 'none';
+                }
+            });
+            
+            // Handle send button click
+            document.getElementById('sendButton').addEventListener('click', sendMessage);
+            
+            // Handle Enter key press
+            document.getElementById('messageInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            // Function to send a message
+            function sendMessage() {
+                const messageInput = document.getElementById('messageInput');
+                const messageText = messageInput.value.trim();
+                
+                if (messageText === '') {
+                    return; // Don't send empty messages
+                }
+                
+                // Hide empty state if visible
+                document.getElementById('emptyMessageState').style.display = 'none';
+                
+                // Create new message element
+                const messagesContainer = document.getElementById('messagesContainer');
+                const messageElement = document.createElement('div');
+                messageElement.className = 'message message-sent';
+                
+                // Format current time (HH:MM)
+                const now = new Date();
+                const hours = now.getHours();
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const timeString = `${hours % 12 || 12}:${minutes} ${hours >= 12 ? 'PM' : 'AM'}`;
+                
+                // Set message content
+                messageElement.innerHTML = `
+                    <div>${messageText}</div>
+                    <div class="message-time">${timeString}</div>
+                `;
+                
+                // Add message to the container
+                messagesContainer.appendChild(messageElement);
+                
+                // Clear input field
+                messageInput.value = '';
+                
+                // Scroll to the bottom
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                
+                // Simulate response after a delay
+                setTimeout(function() {
+                    receiveMessage();
+                }, 1000 + Math.random() * 2000); // Random delay between 1-3 seconds
+            }
+            
+            // Function to simulate receiving a message
+            function receiveMessage() {
+                // Array of possible responses
+                const responses = [
+                    "Hi there! I'm happy to help. What questions do you have?",
+                    "Thanks for reaching out! How can I support you?",
+                    "Hello! I'm here to help. What's on your mind?",
+                    "I appreciate you messaging me. What would you like to talk about?",
+                    "Thanks for connecting. How can I be of assistance?"
+                ];
+                
+                // Pick a random response
+                const responseText = responses[Math.floor(Math.random() * responses.length)];
+                
+                // Create new message element
+                const messagesContainer = document.getElementById('messagesContainer');
+                const messageElement = document.createElement('div');
+                messageElement.className = 'message message-received';
+                
+                // Format current time (HH:MM)
+                const now = new Date();
+                const hours = now.getHours();
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                const timeString = `${hours % 12 || 12}:${minutes} ${hours >= 12 ? 'PM' : 'AM'}`;
+                
+                // Set message content
+                messageElement.innerHTML = `
+                    <div>${responseText}</div>
+                    <div class="message-time">${timeString}</div>
+                `;
+                
+                // Add message to the container
+                messagesContainer.appendChild(messageElement);
+                
+                // Scroll to the bottom
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>
